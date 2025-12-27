@@ -1,0 +1,2713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Dr. Journey: OB/GYN Career - Advanced Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #f8f4f0;
+            --bg-secondary: #ffffff;
+            --accent-pink: #d4526e;
+            --accent-blue: #2c5f8d;
+            --accent-green: #52a675;
+            --accent-yellow: #e8a735;
+            --accent-purple: #8b5a9f;
+            --text-dark: #1a1a1a;
+            --text-light: #666;
+            --shadow: rgba(26, 26, 26, 0.1);
+            --gold: #ffd700;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Work Sans', sans-serif;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 50%, #2c5f8d 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            overflow-x: hidden;
+        }
+
+        #game-container {
+            width: 100%;
+            max-width: 440px;
+            background: var(--bg-primary);
+            border-radius: 24px;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .screen {
+            display: none;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
+            padding: 20px 20px 15px 20px;
+            text-align: center;
+            color: white;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .header h1 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .header .subtitle {
+            font-size: 13px;
+            opacity: 0.95;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        /* Navigation Tabs */
+        .nav-tabs {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            justify-content: center;
+        }
+
+        .nav-tab {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            color: white;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            touch-action: manipulation;
+            -webkit-touch-callout: none;
+        }
+
+        .nav-tab:active {
+            transform: scale(0.95);
+        }
+
+        .nav-tab.active {
+            background: white;
+            color: var(--accent-pink);
+            border-color: white;
+        }
+
+        /* Sound Toggle */
+        .sound-toggle {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+
+        .sound-toggle:active {
+            transform: scale(0.9);
+        }
+
+        .sound-toggle.muted {
+            opacity: 0.5;
+        }
+
+        /* Advanced Stats Bar */
+        .stats-container {
+            background: var(--bg-secondary);
+            padding: 20px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .primary-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #fff, #f9f9f9);
+            border-radius: 14px;
+            padding: 12px;
+            box-shadow: 0 2px 10px var(--shadow);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card.highlight {
+            border-color: var(--accent-green);
+            transform: scale(1.02);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 700;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--text-dark);
+        }
+
+        .stat-bar-container {
+            height: 6px;
+            background: #e8e8e8;
+            border-radius: 3px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .stat-bar-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .stat-bar-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .bar-energy { background: linear-gradient(90deg, #e8a735, #f4b942); }
+        .bar-clinical { background: linear-gradient(90deg, #2c5f8d, #3a7bc8); }
+        .bar-research { background: linear-gradient(90deg, #8b5a9f, #a374b5); }
+        .bar-reputation { background: linear-gradient(90deg, #d4526e, #e16b84); }
+
+        /* Personality Traits */
+        .personality-bar {
+            background: white;
+            border-radius: 12px;
+            padding: 12px;
+            box-shadow: 0 2px 8px var(--shadow);
+        }
+
+        .trait-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .trait-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .trait-name {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .trait-slider {
+            flex: 1;
+            height: 4px;
+            background: #e0e0e0;
+            border-radius: 2px;
+            margin: 0 10px;
+            position: relative;
+        }
+
+        .trait-indicator {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: var(--accent-pink);
+            border-radius: 50%;
+            top: -4px;
+            transform: translateX(-50%);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            transition: left 0.5s ease;
+        }
+
+        /* Content */
+        .content {
+            padding: 20px;
+            min-height: 300px;
+        }
+
+        .story-text {
+            background: white;
+            border-radius: 16px;
+            padding: 22px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px var(--shadow);
+            line-height: 1.7;
+            color: var(--text-dark);
+            border-left: 4px solid var(--accent-pink);
+        }
+
+        .story-text h3 {
+            font-family: 'Crimson Pro', serif;
+            color: var(--accent-pink);
+            margin-bottom: 12px;
+            font-size: 20px;
+        }
+
+        .story-text p {
+            margin-bottom: 12px;
+        }
+
+        .story-text p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* How to Play Page */
+        .guide-section {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 20px var(--shadow);
+            border-left: 4px solid var(--accent-pink);
+        }
+
+        .guide-section h3 {
+            font-family: 'Crimson Pro', serif;
+            color: var(--accent-pink);
+            margin-bottom: 12px;
+            font-size: 20px;
+        }
+
+        .guide-section h4 {
+            color: var(--accent-blue);
+            margin: 12px 0 8px 0;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .guide-section p {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        .guide-section ul {
+            margin: 8px 0 12px 20px;
+            line-height: 1.7;
+        }
+
+        .guide-section li {
+            margin-bottom: 6px;
+        }
+
+        .stat-example {
+            background: linear-gradient(135deg, #f0f7ff, #f9f9f9);
+            border-left: 3px solid var(--accent-blue);
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .tip-box {
+            background: #fff9e6;
+            border-left: 3px solid var(--accent-yellow);
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .warning-box {
+            background: #ffe6e6;
+            border-left: 3px solid var(--accent-pink);
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .success-box {
+            background: #e6f7f0;
+            border-left: 3px solid var(--accent-green);
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .scenario-info {
+            background: #f0f7ff;
+            border-left: 3px solid var(--accent-blue);
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .medical-detail {
+            background: #fff9e6;
+            border-left: 3px solid var(--accent-yellow);
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 6px;
+            font-size: 13px;
+            font-style: italic;
+        }
+
+        /* Choices */
+        .choices {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .choice-btn {
+            background: white;
+            border: 3px solid var(--accent-blue);
+            border-radius: 16px;
+            padding: 18px;
+            font-family: 'Work Sans', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: left;
+            box-shadow: 0 4px 12px var(--shadow);
+            touch-action: manipulation;
+            -webkit-touch-callout: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .choice-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .choice-btn:hover::before {
+            left: 100%;
+        }
+
+        .choice-btn:active {
+            transform: scale(0.97);
+            box-shadow: 0 2px 8px var(--shadow);
+        }
+
+        .choice-btn.clinical {
+            border-color: var(--accent-blue);
+            background: linear-gradient(135deg, #ffffff, #f0f7ff);
+        }
+
+        .choice-btn.research {
+            border-color: var(--accent-purple);
+            background: linear-gradient(135deg, #ffffff, #f5f0ff);
+        }
+
+        .choice-btn.empathetic {
+            border-color: var(--accent-green);
+            background: linear-gradient(135deg, #ffffff, #f0fff7);
+        }
+
+        .choice-btn.risky {
+            border-color: var(--accent-yellow);
+            background: linear-gradient(135deg, #ffffff, #fffdf0);
+        }
+
+        .choice-effects {
+            font-size: 12px;
+            margin-top: 10px;
+            opacity: 0.85;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .effect-badge {
+            background: rgba(44, 95, 141, 0.1);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .effect-badge.positive {
+            color: var(--accent-green);
+            background: rgba(82, 166, 117, 0.1);
+        }
+
+        .effect-badge.negative {
+            color: var(--accent-pink);
+            background: rgba(212, 82, 110, 0.1);
+        }
+
+        /* Progress */
+        .progress-indicator {
+            text-align: center;
+            padding: 16px;
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 18px;
+            box-shadow: 0 2px 10px var(--shadow);
+        }
+
+        .progress-text {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-bottom: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .progress-bar-outer {
+            width: 100%;
+            height: 8px;
+            background: #e8e8e8;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar-inner {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-pink), var(--accent-purple));
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            position: relative;
+        }
+
+        .progress-bar-inner::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        /* Achievement System */
+        .achievement-popup {
+            position: fixed;
+            top: -200px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 20px 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            min-width: 280px;
+            text-align: center;
+            border: 3px solid var(--gold);
+            transition: top 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .achievement-popup.show {
+            top: 80px;
+        }
+
+        .achievement-icon {
+            font-size: 50px;
+            margin-bottom: 10px;
+            animation: bounce 0.6s ease;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .achievement-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--accent-pink);
+            margin-bottom: 8px;
+        }
+
+        .achievement-desc {
+            font-size: 13px;
+            color: var(--text-light);
+        }
+
+        /* Particle Effects */
+        .particles-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        .particle {
+            position: absolute;
+            font-size: 20px;
+            animation: float-up 3s ease-out forwards;
+        }
+
+        @keyframes float-up {
+            0% {
+                opacity: 1;
+                transform: translateY(0) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-300px) rotate(360deg);
+            }
+        }
+
+        /* Mini Games */
+        .mini-game {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px var(--shadow);
+        }
+
+        .mini-game-title {
+            font-family: 'Crimson Pro', serif;
+            font-size: 20px;
+            color: var(--accent-pink);
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .reflex-game-container {
+            position: relative;
+            width: 100%;
+            height: 320px;
+            background: linear-gradient(135deg, #e8f4f8, #f0e8f8);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 3px solid var(--accent-blue);
+        }
+
+        .game-object {
+            position: absolute;
+            width: 45px;
+            height: 45px;
+            font-size: 32px;
+            cursor: pointer;
+            transition: transform 0.15s;
+            user-select: none;
+            touch-action: manipulation;
+            -webkit-touch-callout: none;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        }
+
+        .game-object:active {
+            transform: scale(1.3);
+        }
+
+        .game-timer, .game-score-display {
+            position: absolute;
+            top: 12px;
+            font-family: 'Work Sans', sans-serif;
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--text-dark);
+            background: white;
+            padding: 10px 18px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+        }
+
+        .game-timer {
+            left: 12px;
+        }
+
+        .game-score-display {
+            right: 12px;
+        }
+
+        /* Diagnosis Cards */
+        .diagnosis-options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .diagnosis-card {
+            background: linear-gradient(135deg, #f9f9f9, #f0f0f0);
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            padding: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            user-select: none;
+            touch-action: manipulation;
+            -webkit-touch-callout: none;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .diagnosis-card:active {
+            transform: scale(0.98);
+        }
+
+        .diagnosis-card.selected {
+            background: linear-gradient(135deg, var(--accent-green), #5fb883);
+            color: white;
+            border-color: var(--accent-green);
+            transform: scale(1.02);
+            box-shadow: 0 4px 15px rgba(82, 166, 117, 0.4);
+        }
+
+        .diagnosis-card.wrong {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            border-color: #e74c3c;
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Results */
+        .result-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 6px 30px var(--shadow);
+            margin-bottom: 20px;
+        }
+
+        .result-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: celebrate 1s ease;
+        }
+
+        @keyframes celebrate {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.2) rotate(-10deg); }
+            75% { transform: scale(1.2) rotate(10deg); }
+        }
+
+        .result-title {
+            font-family: 'Crimson Pro', serif;
+            font-size: 26px;
+            color: var(--accent-pink);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .result-message {
+            font-size: 15px;
+            line-height: 1.6;
+            color: var(--text-dark);
+            margin-bottom: 20px;
+        }
+
+        .result-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .final-stat {
+            background: linear-gradient(135deg, #f9f9f9, #f0f0f0);
+            border-radius: 12px;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+        }
+
+        .final-stat-label {
+            font-size: 11px;
+            color: var(--text-light);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .final-stat-value {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--text-dark);
+        }
+
+        /* Responsive */
+        @media (max-width: 380px) {
+            .header h1 {
+                font-size: 24px;
+            }
+            .primary-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles-container" id="particles"></div>
+    <div class="achievement-popup" id="achievement">
+        <div class="achievement-icon" id="achievement-icon">🏆</div>
+        <div class="achievement-title" id="achievement-title">Achievement Unlocked!</div>
+        <div class="achievement-desc" id="achievement-desc">You've reached a milestone!</div>
+    </div>
+
+    <div id="game-container">
+        <!-- Start Screen -->
+        <div id="start-screen" class="screen active">
+            <div class="header">
+                <h1>DR. JOURNEY</h1>
+                <div class="subtitle">OB/GYN Career Simulation</div>
+                <div class="nav-tabs">
+                    <div class="nav-tab active" id="tab-welcome">Welcome</div>
+                    <div class="nav-tab" id="tab-howto">How to Play</div>
+                </div>
+            </div>
+            <div class="content">
+                <div id="welcome-content">
+                    <div class="story-text">
+                        <h3>Welcome, Future Specialist</h3>
+                        <p>You've just completed medical school and matched into a prestigious OB/GYN residency program. Over the next several years, you'll navigate the complex world of women's health, make critical decisions, and shape your career path.</p>
+                        <p><strong>Your journey will test:</strong></p>
+                        <ul style="margin: 15px 0; padding-left: 25px; line-height: 1.8;">
+                            <li>Clinical judgment and diagnostic skills</li>
+                            <li>Research aptitude and academic contribution</li>
+                            <li>Work-life balance and resilience</li>
+                            <li>Ethical decision-making under pressure</li>
+                            <li>Surgical technique and patient care</li>
+                        </ul>
+                        <p>Every choice has consequences. Your stats will fluctuate realistically. Energy management is crucial. Reputation takes years to build but moments to lose.</p>
+                        <p><em>Are you ready to begin your journey to becoming a specialist?</em></p>
+                    </div>
+                    <div class="choices">
+                        <button class="choice-btn clinical" id="start-btn">
+                            🩺 Begin Residency
+                        </button>
+                    </div>
+                </div>
+
+                <div id="howto-content" style="display: none;">
+                    <div class="guide-section">
+                        <h3>🎯 Game Objective</h3>
+                        <p>Complete your 4-year OB/GYN residency and become a board-certified specialist. Make smart choices to build your skills, maintain your energy, and develop your reputation while shaping your unique career path.</p>
+                    </div>
+
+                    <div class="guide-section">
+                        <h3>📊 Understanding Stats</h3>
+                        
+                        <h4>⚡ Energy (Starting: 100/100)</h4>
+                        <p>Your physical and mental stamina. Critical for avoiding burnout!</p>
+                        <div class="warning-box">
+                            <strong>⚠️ Burnout at ≤5 energy</strong><br>
+                            Red warning appears at ≤25 energy
+                        </div>
+                        <ul>
+                            <li><strong>Drains:</strong> Overwork, complex cases, taking on too much</li>
+                            <li><strong>Restores:</strong> Vacation, year breaks, declining extra work, choosing balance</li>
+                        </ul>
+
+                        <h4>🩺 Clinical Skill (Starting: 25/100)</h4>
+                        <p>Your diagnostic ability, surgical technique, and patient care competence.</p>
+                        <ul>
+                            <li><strong>Increases:</strong> Handling complex cases, successful procedures, correct diagnoses</li>
+                            <li><strong>Decreases:</strong> Poor clinical decisions, avoiding challenges</li>
+                        </ul>
+
+                        <h4>📚 Research (Starting: 15/100)</h4>
+                        <p>Your academic productivity and contributions to medical literature.</p>
+                        <ul>
+                            <li><strong>Increases:</strong> Joining studies, publishing papers, fellowship training</li>
+                            <li><strong>Decreases:</strong> Focusing purely on clinical work</li>
+                        </ul>
+
+                        <h4>⭐ Reputation (Starting: 30/100)</h4>
+                        <p>How colleagues, attendings, and institutions view you.</p>
+                        <div class="warning-box">
+                            <strong>⚠️ Career setback if &lt;15 after event 15</strong>
+                        </div>
+                        <ul>
+                            <li><strong>Increases:</strong> Good outcomes, leadership, publications, ethical choices</li>
+                            <li><strong>Decreases:</strong> Poor judgment, mistakes, avoiding responsibility</li>
+                        </ul>
+                    </div>
+
+                    <div class="guide-section">
+                        <h3>🎭 Personality Traits</h3>
+                        <p>Your choices shape three personality axes shown as sliders:</p>
+                        <ul>
+                            <li><strong>Clinical ↔ Research:</strong> Bedside vs. academic focus</li>
+                            <li><strong>Conservative ↔ Innovative:</strong> Evidence-based vs. cutting-edge approaches</li>
+                            <li><strong>Efficient ↔ Empathetic:</strong> Time management vs. patient connection</li>
+                        </ul>
+                        <div class="tip-box">
+                            💡 <strong>Tip:</strong> There's no "right" personality! Each path leads to success. Your traits determine your specialty fit and career ending.
+                        </div>
+                    </div>
+
+                    <div class="guide-section">
+                        <h3>🎮 Gameplay Elements</h3>
+                        
+                        <h4>Story Choices</h4>
+                        <p>Make decisions in realistic clinical scenarios. Each choice shows its effects on your stats.</p>
+                        
+                        <h4>Diagnosis Mini-Games</h4>
+                        <p>Select correct clinical findings or treatment options. Wrong answers deduct points and energy!</p>
+                        <div class="stat-example">
+                            ✅ <strong>Success:</strong> +150-300 points, skill boost<br>
+                            ❌ <strong>Failure:</strong> +30-70 points, reputation hit, -15 per wrong answer
+                        </div>
+                        
+                        <h4>Reflex Games</h4>
+                        <p>Tap correct medical items quickly. Tests your prioritization under pressure.</p>
+                        
+                        <h4>Timing Games</h4>
+                        <p>Tap when the bar is in the green zone. Represents surgical precision.</p>
+                    </div>
+
+                    <div class="guide-section">
+                        <h3>⚠️ How to AVOID Burnout</h3>
+                        
+                        <div class="success-box">
+                            <strong>✅ DO:</strong>
+                            <ul style="margin: 8px 0 0 18px;">
+                                <li>Take vacation when offered (+35 energy!)</li>
+                                <li>Accept year break recoveries (+5-10 energy)</li>
+                                <li>Choose balanced options sometimes</li>
+                                <li>Decline extra work when energy is low</li>
+                                <li>Consider lifestyle-friendly specialties</li>
+                            </ul>
+                        </div>
+
+                        <div class="warning-box">
+                            <strong>❌ DON'T:</strong>
+                            <ul style="margin: 8px 0 0 18px;">
+                                <li>Choose ALL the hardest options</li>
+                                <li>Take on research + teaching + leadership simultaneously</li>
+                                <li>Ignore the red energy warning</li>
+                                <li>Fail all mini-games (costs extra energy)</li>
+                                <li>Push through when you should rest</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="guide-section">
+                        <h3>🏆 Achievements & Scoring</h3>
+                        <p>Unlock achievements for milestones:</p>
+                        <ul>
+                            <li>🩺 Clinical Competence (50+ clinical skill)</li>
+                            <li>📚 Research Scholar (50+ research)</li>
+                            <li>⭐ Highly Respected (70+ reputation)</li>
+                            <li>⚖️ Well-Rounded (50+ clinical AND research)</li>
+                            <li>⚡ Energized (80+ energy maintained)</li>
+                            <li>💪 Survivor (reach halfway point on low energy)</li>
+                        </ul>
+                        <p>Each achievement gives +100 points and particle effects!</p>
+                    </div>
+
+                    <div class="guide-section">
+                        <h3>🎓 Winning the Game</h3>
+                        <p>Complete all 25 events without burning out or losing reputation. Your ending depends on:</p>
+                        <ul>
+                            <li><strong>Final Stats:</strong> Average of Clinical + Research + Reputation</li>
+                            <li><strong>Energy:</strong> High energy = better ending</li>
+                            <li><strong>Specialty Choice:</strong> MFM, REI, GynOnc, or Generalist</li>
+                            <li><strong>Personality:</strong> Your choices shape your story</li>
+                        </ul>
+                        
+                        <div class="stat-example">
+                            🏆 <strong>Outstanding (75+ avg, 50+ energy):</strong> Physician-Scientist<br>
+                            ⭐ <strong>Accomplished (60+ avg):</strong> Respected Specialist<br>
+                            🎓 <strong>Certified (any completion):</strong> Board Certified
+                        </div>
+                    </div>
+
+                    <div class="guide-section">
+                        <h3>💡 Pro Tips</h3>
+                        <div class="tip-box">
+                            <ul style="margin: 8px 0 0 18px; line-height: 1.8;">
+                                <li>🎯 <strong>Balance is key</strong> - You can't excel at everything simultaneously</li>
+                                <li>⚡ <strong>Watch your energy</strong> - It's the most critical stat</li>
+                                <li>📚 <strong>Specialize early</strong> - Clinical OR research focus helps</li>
+                                <li>🏥 <strong>Perfect practice</strong> - Mini-games significantly boost stats</li>
+                                <li>⏸️ <strong>Self-care isn't selfish</strong> - Vacation choices prevent burnout</li>
+                                <li>🔄 <strong>Replay value</strong> - Different choices = different endings!</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="choices">
+                        <button class="choice-btn clinical" id="start-from-guide-btn">
+                            🩺 Start Your Career
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="game-screen" class="screen">
+            <div class="header">
+                <h1>DR. JOURNEY</h1>
+                <div class="subtitle" id="current-year">PGY-1 (Intern Year)</div>
+            </div>
+            <div class="stats-container">
+                <div class="primary-stats">
+                    <div class="stat-card" id="energy-card">
+                        <div class="stat-header">
+                            <span class="stat-label">⚡ Energy</span>
+                            <span class="stat-value" id="energy-value">100</span>
+                        </div>
+                        <div class="stat-bar-container">
+                            <div class="stat-bar-fill bar-energy" id="energy-bar" style="width: 85%"></div>
+                        </div>
+                    </div>
+                    <div class="stat-card" id="clinical-card">
+                        <div class="stat-header">
+                            <span class="stat-label">🩺 Clinical Skill</span>
+                            <span class="stat-value" id="clinical-value">25</span>
+                        </div>
+                        <div class="stat-bar-container">
+                            <div class="stat-bar-fill bar-clinical" id="clinical-bar" style="width: 25%"></div>
+                        </div>
+                    </div>
+                    <div class="stat-card" id="research-card">
+                        <div class="stat-header">
+                            <span class="stat-label">📚 Research</span>
+                            <span class="stat-value" id="research-value">15</span>
+                        </div>
+                        <div class="stat-bar-container">
+                            <div class="stat-bar-fill bar-research" id="research-bar" style="width: 15%"></div>
+                        </div>
+                    </div>
+                    <div class="stat-card" id="reputation-card">
+                        <div class="stat-header">
+                            <span class="stat-label">⭐ Reputation</span>
+                            <span class="stat-value" id="reputation-value">30</span>
+                        </div>
+                        <div class="stat-bar-container">
+                            <div class="stat-bar-fill bar-reputation" id="reputation-bar" style="width: 30%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="personality-bar">
+                    <div class="trait-row">
+                        <span class="trait-name">Clinical</span>
+                        <div class="trait-slider">
+                            <div class="trait-indicator" id="trait-clinical" style="left: 50%"></div>
+                        </div>
+                        <span class="trait-name">Research</span>
+                    </div>
+                    <div class="trait-row">
+                        <span class="trait-name">Conservative</span>
+                        <div class="trait-slider">
+                            <div class="trait-indicator" id="trait-approach" style="left: 50%"></div>
+                        </div>
+                        <span class="trait-name">Innovative</span>
+                    </div>
+                    <div class="trait-row">
+                        <span class="trait-name">Efficient</span>
+                        <div class="trait-slider">
+                            <div class="trait-indicator" id="trait-bedside" style="left: 50%"></div>
+                        </div>
+                        <span class="trait-name">Empathetic</span>
+                    </div>
+                </div>
+            </div>
+            <div class="content">
+                <div class="progress-indicator">
+                    <div class="progress-text">Career Progress: <span id="progress-percent">0</span>%</div>
+                    <div class="progress-bar-outer">
+                        <div class="progress-bar-inner" id="progress-bar" style="width: 0%"></div>
+                    </div>
+                </div>
+                <div id="game-content"></div>
+            </div>
+        </div>
+
+        <!-- End Screen -->
+        <div id="end-screen" class="screen">
+            <div class="header">
+                <h1>CAREER COMPLETE</h1>
+                <div class="subtitle">Your Journey Concluded</div>
+            </div>
+            <div class="content">
+                <div class="result-card">
+                    <div class="result-icon" id="result-icon">🎓</div>
+                    <div class="result-title" id="result-title">Board Certified Specialist</div>
+                    <div class="result-message" id="result-message"></div>
+                    <div class="result-stats" id="final-stats"></div>
+                </div>
+                <div class="choices">
+                    <button class="choice-btn clinical" id="play-again-btn">
+                        🔄 Start New Career
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const game = {
+            stats: {
+                energy: 100,
+                clinical: 25,
+                research: 15,
+                reputation: 30
+            },
+            traits: {
+                clinicalVsResearch: 50,    // 0=clinical, 100=research
+                conservativeVsInnovative: 50,  // 0=conservative, 100=innovative
+                efficientVsEmpathetic: 50   // 0=efficient, 100=empathetic
+            },
+            score: 0,
+            year: 1,
+            currentEvent: 0,
+            totalEvents: 25,
+            achievements: [],
+            specialty: null,
+            soundEnabled: true,
+            easterEggsFound: [],
+            funMessages: [
+                "☕ Remember to hydrate! (Coffee counts, right?)",
+                "💪 You're doing great! No really, you are!",
+                "🎯 Fun fact: 99% of doctors have imposter syndrome",
+                "🌟 Your patient just called you 'the nice doctor'!",
+                "😴 Adequate sleep is a myth perpetuated by Big Pillow",
+                "🍕 Hospital cafeteria pizza builds character",
+                "📱 Your pager battery is low. Nobody cares.",
+                "🎓 Medical school didn't prepare you for THIS!",
+                "💚 A nurse just complimented your IV skills!",
+                "⚡ Current vibe: Controlled chaos",
+                "🏥 At least it's not a full moon tonight...",
+                "📊 Your stats are looking good! (Unlike your posture)",
+                "🎉 You successfully found a pen that works!",
+                "☀️ Daylight! You remember daylight!",
+                "🤝 Teamwork makes the dream work (cliché but true)"
+            ],
+
+            // Medically accurate events
+            events: [
+                {
+                    type: 'story',
+                    title: 'First Night Call',
+                    text: 'Your first overnight call as an intern. It\'s 2 AM and you\'re running on vending machine coffee and pure adrenaline. Your pager goes off (yes, we still use pagers in 2025). A 34-week primigravida with contractions every 3-4 minutes just arrived. On examination: cervix 3cm dilated, 80% effaced, -2 station. Fetal heart rate 150s with moderate variability, no decelerations. The senior resident is asleep somewhere. What do you do?',
+                    scenario: 'Patient presents in preterm labor. You need to decide on immediate management. The attending\'s number is in your phone... maybe?',
+                    choices: [
+                        {
+                            text: '📞 Call attending immediately (and admit you\'re terrified)',
+                            effects: { energy: -5, clinical: 3, reputation: 5 },
+                            traits: { conservativeVsInnovative: -5 },
+                            feedback: 'Attending picks up groggily: "What are the vitals? Good call, intern. Here\'s what we do..." You breathe a sigh of relief. Knowing your limits is actually a strength.'
+                        },
+                        {
+                            text: '🔬 Channel your inner badass: Order betamethasone, start tocolysis (nifedipine), call NICU',
+                            effects: { energy: -10, clinical: 12, reputation: 8 },
+                            traits: { conservativeVsInnovative: 10, clinicalVsResearch: -5 },
+                            feedback: 'You crush it! Attending reviews in the morning: "Perfect preterm labor management. Steroids for fetal lungs, tocolysis to buy time. Well done!" You feel like a real doctor for the first time. Coffee tastes like victory.'
+                        },
+                        {
+                            text: '⏰ "Let me just... observe for a bit?" (Panic mode activated)',
+                            effects: { energy: -3, clinical: -5, reputation: -8 },
+                            traits: { conservativeVsInnovative: -10 },
+                            feedback: 'Two hours later, attending storms in: "Why didn\'t you start steroids?! This is 32 weeks!" Lesson learned the hard way. Someone brings you a donut. It doesn\'t help.'
+                        }
+                    ]
+                },
+                {
+                    type: 'minigame-diagnosis',
+                    title: 'Emergency Diagnosis',
+                    text: 'A 28-year-old G2P1 at 32 weeks arrives via EMS with severe headache, vision changes, and epigastric pain. BP: 168/112. What are your immediate concerns? Select all correct red flags for severe preeclampsia:',
+                    options: [
+                        { text: 'Blood pressure ≥160/110', correct: true },
+                        { text: 'Headache with visual changes', correct: true },
+                        { text: 'Mild peripheral edema', correct: false },
+                        { text: 'Epigastric/RUQ pain', correct: true },
+                        { text: 'Normal deep tendon reflexes', correct: false },
+                        { text: 'Proteinuria 1+', correct: false }
+                    ],
+                    requiredCorrect: 3,
+                    onSuccess: { clinical: 20, reputation: 15, energy: -8, score: 150 },
+                    onFailure: { clinical: 5, reputation: -10, energy: -12, score: 30 }
+                },
+                {
+                    type: 'story',
+                    title: 'Research Opportunity',
+                    text: 'The department chair approaches you about a multi-center RCT on vaginal progesterone for preterm birth prevention. It\'s a 3-year commitment requiring patient recruitment, data collection, and eventual publication.',
+                    scenario: 'This could significantly boost your academic profile but will demand time and energy.',
+                    choices: [
+                        {
+                            text: '✅ Accept - academic medicine is my path',
+                            effects: { research: 25, clinical: -5, energy: -15, reputation: 15 },
+                            traits: { clinicalVsResearch: 15 },
+                            feedback: 'Joining RCTs builds your CV and contributes to evidence-based medicine.'
+                        },
+                        {
+                            text: '🏥 Decline - focus on clinical excellence',
+                            effects: { clinical: 15, energy: 15 },
+                            traits: { clinicalVsResearch: -15 },
+                            feedback: 'Clinical mastery is equally valuable. Not everyone needs to be a researcher. Taking this time for yourself helps maintain balance.'
+                        },
+                        {
+                            text: '⚖️ Negotiate limited involvement',
+                            effects: { research: 12, clinical: 8, energy: -8, reputation: 8 },
+                            traits: { efficientVsEmpathetic: -5 },
+                            feedback: 'Balanced approach. You gain research experience without full burden.'
+                        }
+                    ]
+                },
+                {
+                    type: 'minigame-reflex',
+                    title: 'Surgical Coordination',
+                    text: 'Emergency C-section! Tap the correct surgical instruments in order. Avoid wrong items!',
+                    duration: 18,
+                    targetScore: 15,
+                    onSuccess: { clinical: 18, reputation: 12, energy: -10, score: 140 },
+                    onFailure: { clinical: 6, reputation: -8, energy: -15, score: 40 }
+                },
+                {
+                    type: 'story',
+                    title: 'Ethical Dilemma',
+                    text: 'A 17-year-old requests abortion at 14 weeks. Her parents are in the waiting room, unaware. She\'s adamant about privacy. Your state has parental notification laws but judicial bypass is possible.',
+                    scenario: 'This tests your understanding of adolescent confidentiality, ethics, and legal boundaries.',
+                    medical: 'Adolescents have rights to confidential reproductive healthcare in most jurisdictions, but laws vary.',
+                    choices: [
+                        {
+                            text: '🤝 Support her autonomy, explain judicial bypass process',
+                            effects: { reputation: 15, energy: -8, clinical: 5 },
+                            traits: { efficientVsEmpathetic: 15, conservativeVsInnovative: 10 },
+                            feedback: 'Patient-centered care. You protected her rights while following legal channels.'
+                        },
+                        {
+                            text: '👨‍👩‍👧 Encourage family discussion, offer mediation',
+                            effects: { reputation: 8, energy: -10, clinical: 3 },
+                            traits: { efficientVsEmpathetic: 10, conservativeVsInnovative: -5 },
+                            feedback: 'Empathetic but may not align with her wishes. Patient autonomy is paramount.'
+                        },
+                        {
+                            text: '📋 Refer to social work, avoid direct involvement',
+                            effects: { reputation: -5, energy: 8, clinical: -3 },
+                            traits: { efficientVsEmpathetic: -10 },
+                            feedback: 'Passing responsibility. As her physician, you should advocate for her.'
+                        }
+                    ]
+                },
+                {
+                    type: 'story',
+                    title: 'PGY-2: Level Up! 🎮',
+                    text: 'Congratulations! You survived intern year! You took a brief vacation (you actually slept!), and now you\'re back as a PGY-2. The interns look at you with terrified awe, like you\'re some kind of wizard who knows things. You have an intern. YOUR OWN INTERN. You\'re now trusted with more autonomy, supervising fresh meat—er, interns—and taking more complex cases. Your white coat has actual pockets. You feel like a real doctor.',
+                    scenario: 'Transition to senior resident responsibilities. You\'re moving up in the world! (Your debt isn\'t though.)',
+                    choices: [
+                        {
+                            text: '💪 "Let\'s DO this! I\'m ready to teach and lead!" (Embrace it all)',
+                            effects: { energy: 10, clinical: 10, reputation: 10 },
+                            feedback: 'Your intern asks you a question you don\'t know the answer to. You smile confidently and say "Great question! Let\'s look that up together." Then you secretly Google it. Welcome to teaching. Growth happens outside comfort zones!'
+                        }
+                    ]
+                },
+                {
+                    type: 'minigame-diagnosis',
+                    title: 'Complex Case Management',
+                    text: 'A 42-year-old G5P4 at 28 weeks with chronic hypertension on labetalol presents with decreased fetal movement. NST shows minimal variability, no accelerations. BPP score 4/10. Select appropriate next steps:',
+                    options: [
+                        { text: 'Immediate delivery regardless of gestational age', correct: false },
+                        { text: 'Betamethasone and close monitoring', correct: true },
+                        { text: 'Umbilical artery Doppler assessment', correct: true },
+                        { text: 'Send patient home with kick count diary', correct: false },
+                        { text: 'Admit for continuous monitoring', correct: true },
+                        { text: 'Schedule routine follow-up in 1 week', correct: false }
+                    ],
+                    requiredCorrect: 3,
+                    onSuccess: { clinical: 25, reputation: 18, energy: -10, score: 180 },
+                    onFailure: { clinical: 8, reputation: -12, energy: -15, score: 50 }
+                },
+                {
+                    type: 'story',
+                    title: 'Surgical Plot Twist',
+                    text: 'You\'re doing your first solo laparoscopic ovarian cystectomy. The music is good, you\'re in the zone, everything is smooth... and then you encounter the adhesions from hell. Dense. Vascular. Angry. The cyst ruptures, spilling lovely dermoid contents (hair, teeth, and existential dread) all over the peritoneum. Your attending is in another OR. The scrub tech raises an eyebrow at you. The anesthesiologist says "Everything okay up there?" in that tone.',
+                    scenario: 'This is your "oh sh*t" moment. Welcome to surgery. How you handle this defines you.',
+                    medical: 'Dermoid cyst rupture requires copious irrigation (>10L) to prevent chemical peritonitis. Hair and sebum = inflammation city.',
+                    choices: [
+                        {
+                            text: '🚨 "Yeah, I need my attending. NOW." (Call for backup)',
+                            effects: { clinical: 8, reputation: 12, energy: -10 },
+                            traits: { conservativeVsInnovative: -10 },
+                            feedback: 'Attending arrives in 3 minutes. "Good call. This is gnarly. Let\'s irrigate the hell out of this." Together you wash, suction, and complete the case safely. Knowing when to ask for help = surgical wisdom.'
+                        },
+                        {
+                            text: '💧 "I got this." (Irrigate thoroughly, handle it laparoscopically)',
+                            effects: { clinical: 20, reputation: 20, energy: -18 },
+                            traits: { conservativeVsInnovative: 15 },
+                            feedback: '15 liters of irrigation later, the abdomen sparkles. You complete the case. Attending reviews the recording: "Damn. Well done." You\'re shaking but proud. Surgery credentials: UNLOCKED.'
+                        },
+                        {
+                            text: '⏰ "Let me just... close quickly?" (Speed > thoroughness)',
+                            effects: { clinical: -10, reputation: -15, energy: -8 },
+                            traits: { efficientVsEmpathetic: -15 },
+                            feedback: 'Patient develops post-op fever. Repeat laparoscopy shows residual debris. Attending is not amused. You learn this lesson expensively. The scrub tech definitely judged you.'
+                        }
+                    ]
+                },
+                {
+                    type: 'minigame-timing',
+                    title: 'Vacuum-Assisted Delivery',
+                    text: 'Second stage arrest. Station +2, OP position. Time the vacuum application correctly for optimal traction during contractions!',
+                    rounds: 5,
+                    onSuccess: { clinical: 22, reputation: 16, energy: -12, score: 160 },
+                    onFailure: { clinical: 8, reputation: -5, energy: -18, score: 50 }
+                },
+                {
+                    type: 'story',
+                    title: 'The Burnout Warning Signs',
+                    text: 'You just cried in the supply closet. Again. You\'ve been working 80+ hour weeks and honestly can\'t remember your last day off. Last night you dreamed you were a fetus in breach presentation trying to escape. Your senior resident finds you staring blankly at the ultrasound machine and says "Hey... you okay? You look like a vampire extra from a medical drama." The wellness program exists, theoretically.',
+                    scenario: 'Real talk: Physician burnout isn\'t a character flaw - it\'s an occupational hazard. What you do next matters.',
+                    medical: 'Studies show 50% of residents experience burnout. Taking time off isn\'t weak - it\'s smart medicine.',
+                    choices: [
+                        {
+                            text: '🌴 "I need a VACATION. Now. Like, yesterday." (Take full week off)',
+                            effects: { energy: 35, clinical: -5, reputation: 5 },
+                            traits: { efficientVsEmpathetic: 10 },
+                            feedback: 'You spend 7 days sleeping, eating real food, and remembering what sunlight feels like. Your co-residents cover for you. You return human again. Best decision of residency so far. Self-care: 1, Burnout: 0.'
+                        },
+                        {
+                            text: '💊 "Maybe I should talk to someone... and possibly start meds?"',
+                            effects: { energy: 10, clinical: 5, reputation: -5 },
+                            traits: { efficientVsEmpathetic: -10 },
+                            feedback: 'You start therapy and SSRIs. It helps, but you\'re still drowning in work. Your therapist gently suggests: "You know... you could also just work less?" Revolutionary concept.'
+                        },
+                        {
+                            text: '🎯 "I\'ll just... cut back on the extras. Boundaries!" (Delegate & reduce)',
+                            effects: { energy: 20, clinical: 3, research: -5 },
+                            traits: { efficientVsEmpathetic: 5 },
+                            feedback: 'You quit the committee. Drop the extra research project. Start saying "no." Turns out the hospital doesn\'t collapse when you\'re not superhuman. Who knew? You sleep for 8 hours. It\'s glorious.'
+                        }
+                    ]
+                },
+                {
+                    type: 'story',
+                    title: 'PGY-3: The Senior Years 👑',
+                    text: 'You\'re a SENIOR now. Interns fear you. PGY-2s respect you. Attendings... tolerate you? You took another vacation (crazy concept!), actually left the hospital before midnight a few times, and might have a social life again. Now you\'re eligible to apply for Chief Resident - the prestigious position that basically means "do MORE work but with a fancy title." Your mom is very proud. Your bank account is not.',
+                    scenario: 'Leadership opportunity incoming. Also, your student loans are asking about you.',
+                    choices: [
+                        {
+                            text: '🎖️ "Chief Resident! My CV needs this!" (Apply for the glory)',
+                            effects: { reputation: 25, energy: -12, clinical: 10 },
+                            traits: { clinicalVsResearch: 5 },
+                            feedback: 'You spend your application writing about "leadership" and "passion for education" (translation: you enjoy organizing schedules at 11 PM). Interview goes well. They ask your vision. You say "mentorship and excellence." They eat it up. Chief Resident track: ACTIVATED.'
+                        },
+                        {
+                            text: '📚 "Nah, I\'m focusing on fellowship apps and research"',
+                            effects: { research: 20, clinical: 10, energy: -5 },
+                            traits: { clinicalVsResearch: 10 },
+                            feedback: 'You politely decline. "I need to focus on my MFM/REI/GynOnc application." (Insert specialty here.) Everyone nods respectfully. You spend evenings working on your personal statement instead of scheduling nightmares. Strategic AF.'
+                        },
+                        {
+                            text: '⚖️ "I\'m good where I am, thanks" (Maintain sanity)',
+                            effects: { clinical: 12, energy: 10 },
+                            feedback: 'You choose peace. Life balance. Sleeping on actual days off. Revolutionary! Your therapist is proud. Your co-residents are jealous. Not every opportunity needs to be seized. Maturity: ACHIEVED.'
+                        }
+                    ]
+                },
+                {
+                    type: 'minigame-diagnosis',
+                    title: 'Postpartum Emergency',
+                    text: 'Post-C/S day 2: Patient has fever 101.8°F, tachycardia, lower abdominal pain, foul-smelling lochia. Uterus tender. What\'s your differential and workup?',
+                    options: [
+                        { text: 'Endometritis - start broad-spectrum antibiotics', correct: true },
+                        { text: 'Normal postpartum - observe only', correct: false },
+                        { text: 'Order CBC, blood cultures, urinalysis', correct: true },
+                        { text: 'Immediate hysterectomy', correct: false },
+                        { text: 'Pelvic ultrasound to assess for retained products', correct: true },
+                        { text: 'Discharge with oral antibiotics', correct: false }
+                    ],
+                    requiredCorrect: 3,
+                    onSuccess: { clinical: 25, reputation: 20, energy: -10, score: 200 },
+                    onFailure: { clinical: 5, reputation: -15, energy: -15, score: 40 }
+                },
+                {
+                    type: 'story',
+                    title: 'Publication Opportunity',
+                    text: 'You\'ve collected interesting data on surgical outcomes. A journal invites you to write it up. First-author paper in a mid-tier journal or collaborate with attending for higher-tier journal as second author?',
+                    scenario: 'Academic currency: first-author papers vs. prestigious journals.',
+                    choices: [
+                        {
+                            text: '✍️ First author, mid-tier journal',
+                            effects: { research: 20, reputation: 15, energy: -18 },
+                            traits: { clinicalVsResearch: 10 },
+                            feedback: 'First-author papers demonstrate independence. Great for your CV.'
+                        },
+                        {
+                            text: '🤝 Second author, top-tier journal',
+                            effects: { research: 15, reputation: 20, energy: -10 },
+                            traits: { clinicalVsResearch: 10, conservativeVsInnovative: 5 },
+                            feedback: 'Journal impact factor matters for fellowships. Strategic choice.'
+                        },
+                        {
+                            text: '📊 Do both - separate manuscripts',
+                            effects: { research: 30, reputation: 25, energy: -30 },
+                            traits: { clinicalVsResearch: 15, efficientVsEmpathetic: -10 },
+                            feedback: 'Ambitious! If you have the energy, maximum academic output.'
+                        }
+                    ]
+                },
+                {
+                    type: 'minigame-reflex',
+                    title: 'Labor Management',
+                    text: 'Busy L&D night! Prioritize patients correctly - tap hearts for urgent cases, avoid non-urgent!',
+                    duration: 16,
+                    targetScore: 14,
+                    onSuccess: { clinical: 20, reputation: 15, energy: -12, score: 150 },
+                    onFailure: { clinical: 8, reputation: -10, energy: -18, score: 45 }
+                },
+                {
+                    type: 'story',
+                    title: 'Fellowship Decision Point',
+                    text: 'You must choose a specialty focus. Each path has different demands, lifestyle, and patient populations.',
+                    scenario: 'This shapes your entire career. Choose wisely based on your interests and values.',
+                    choices: [
+                        {
+                            text: '👶 Maternal-Fetal Medicine (high-risk OB)',
+                            effects: { clinical: 15, research: 10, energy: -10, reputation: 20 },
+                            specialty: 'MFM',
+                            traits: { clinicalVsResearch: 5, conservativeVsInnovative: 10 },
+                            feedback: 'MFM combines clinical care with cutting-edge maternal and fetal medicine.'
+                        },
+                        {
+                            text: '🧬 Reproductive Endocrinology & Infertility',
+                            effects: { clinical: 12, research: 20, energy: -5, reputation: 20 },
+                            specialty: 'REI',
+                            traits: { clinicalVsResearch: 15, conservativeVsInnovative: 15 },
+                            feedback: 'REI is heavily research-based with excellent lifestyle and income.'
+                        },
+                        {
+                            text: '🔬 Gynecologic Oncology',
+                            effects: { clinical: 20, research: 10, energy: -15, reputation: 25 },
+                            specialty: 'GynOnc',
+                            traits: { clinicalVsResearch: -5, conservativeVsInnovative: 10 },
+                            feedback: 'GynOnc is surgical and challenging, with deep patient relationships.'
+                        },
+                        {
+                            text: '🏥 Generalist OB/GYN (no fellowship)',
+                            effects: { clinical: 15, energy: 25, reputation: 10 },
+                            specialty: 'Generalist',
+                            traits: { clinicalVsResearch: -10 },
+                            feedback: 'Generalists are the backbone of women\'s healthcare. Broad practice, good lifestyle. You\'ll have time to recharge.'
+                        }
+                    ]
+                },
+                {
+                    type: 'story',
+                    title: 'Year 4 - Senior Resident',
+                    text: 'Final year of residency! You\'re essentially functioning as an attending with supervision. After your vacation, you return refreshed and ready. You\'re the go-to person for junior residents and medical students.',
+                    scenario: 'Independence, responsibility, and teaching.',
+                    choices: [
+                        {
+                            text: '👨‍🏫 Embrace teaching role',
+                            effects: { reputation: 15, clinical: 10, energy: 5 },
+                            feedback: 'Great teachers are remembered forever by their trainees. The time off helped you approach teaching with renewed energy.'
+                        }
+                    ]
+                },
+                {
+                    type: 'minigame-diagnosis',
+                    title: 'Board Exam Preparation',
+                    text: 'ABOG Written Exam scenario: 35-year-old with pelvic mass. CA-125: 450. CT shows complex adnexal mass with ascites. What\'s your approach?',
+                    options: [
+                        { text: 'Immediate surgical staging by GynOnc', correct: true },
+                        { text: 'Neoadjuvant chemotherapy first', correct: false },
+                        { text: 'Biopsy only, defer definitive surgery', correct: false },
+                        { text: 'Tumor markers: CA-125, HE4, LDH', correct: true },
+                        { text: 'Genetic counseling for BRCA testing', correct: true },
+                        { text: 'Expectant management with serial imaging', correct: false }
+                    ],
+                    requiredCorrect: 3,
+                    onSuccess: { clinical: 30, reputation: 25, energy: -10, score: 250 },
+                    onFailure: { clinical: 10, reputation: -10, energy: -15, score: 60 }
+                },
+                {
+                    type: 'story',
+                    title: 'The Letter That Makes Your Heart Stop',
+                    text: 'There\'s a certified letter waiting for you. You know what it is before you open it. You\'re named in a lawsuit for a delivery from 6 months ago - shoulder dystocia, resolved with McRoberts maneuver, baby now has suspected brachial plexus injury. Your hands shake as you read. Your documentation was thorough (thank GOD for your OCD charting). Your attending says "Welcome to OB/GYN. This happens to everyone eventually." You feel sick anyway.',
+                    scenario: 'Every physician\'s nightmare. Most shoulder dystocia injuries resolve spontaneously, and most lawsuits don\'t go to trial. But right now? This feels personal.',
+                    medical: '90% of birth-related brachial plexus injuries resolve by 1 year. Good documentation is your best defense. Deep breath.',
+                    choices: [
+                        {
+                            text: '📋 "My documentation is solid. I did everything right." (Trust the process)',
+                            effects: { energy: -12, reputation: 5, clinical: 5 },
+                            traits: { conservativeVsInnovative: -5 },
+                            feedback: 'Your lawyer reviews the chart: "This is excellent documentation. Clear timeline, appropriate interventions, good outcome note." Case settles pre-trial. You learn that doing good medicine AND documenting it well matters. Also: you will never skip documentation again.'
+                        },
+                        {
+                            text: '😰 "Maybe I should quit OB? Do GYN only?" (Existential crisis mode)',
+                            effects: { energy: -22, clinical: -10, reputation: -5 },
+                            feedback: 'You spiral for weeks. Can\'t sleep. Every delivery feels like a ticking time bomb. Your therapist earns her fee this month. Eventually you realize: litigation risk is real but letting fear drive decisions isn\'t sustainable. Deep breaths.'
+                        },
+                        {
+                            text: '🧘 "This sucks, but it\'s a learning experience" (Mature response)',
+                            effects: { energy: -8, clinical: 10, reputation: 10 },
+                            traits: { conservativeVsInnovative: 5 },
+                            feedback: 'You update your shoulder dystocia protocol. Review documentation practices. Attend a risk management seminar. Turn anxiety into action. The case eventually closes. You\'re a better, more careful physician for it. Growth through adversity: ACHIEVED.'
+                        }
+                    ]
+                },
+                {
+                    type: 'minigame-timing',
+                    title: 'Laparoscopic Surgery',
+                    text: 'Complex endometriosis excision. Perfect timing required for vessel ligation and tissue planes!',
+                    rounds: 6,
+                    onSuccess: { clinical: 28, reputation: 20, energy: -15, score: 200 },
+                    onFailure: { clinical: 10, reputation: -8, energy: -20, score: 60 }
+                },
+                {
+                    type: 'story',
+                    title: 'Job Offers',
+                    text: 'You\'re graduating! Three offers: (1) Academic medical center - lower pay, teaching/research, (2) Private practice - high volume, good income, (3) Fellowship in your chosen specialty - extend training.',
+                    scenario: 'Your career path diverges here. Each has trade-offs.',
+                    choices: [
+                        {
+                            text: '🎓 Academic medicine - teach & research',
+                            effects: { research: 20, reputation: 20, clinical: 10 },
+                            traits: { clinicalVsResearch: 15 },
+                            feedback: 'Academic life offers intellectual stimulation and shaping future physicians.'
+                        },
+                        {
+                            text: '💰 Private practice - clinical excellence',
+                            effects: { clinical: 20, energy: 15, reputation: 15 },
+                            traits: { clinicalVsResearch: -15, efficientVsEmpathetic: -5 },
+                            feedback: 'Private practice offers autonomy, good income, and work-life balance.'
+                        },
+                        {
+                            text: '📚 Fellowship - subspecialize further',
+                            effects: { clinical: 15, research: 25, reputation: 25, energy: -12 },
+                            traits: { clinicalVsResearch: 20 },
+                            feedback: 'Subspecialty training opens doors to complex cases and academic opportunities.'
+                        }
+                    ]
+                },
+                {
+                    type: 'minigame-diagnosis',
+                    title: 'Final Clinical Challenge',
+                    text: 'Rapid Response: Postpartum patient with sudden onset dyspnea, chest pain, hypoxia. HR 130, BP 90/60, RR 28. What\'s your immediate response?',
+                    options: [
+                        { text: 'Amniotic fluid embolism on differential', correct: true },
+                        { text: 'Pulmonary embolism - start heparin immediately', correct: false },
+                        { text: 'Call for help - activate MTP if needed', correct: true },
+                        { text: 'Order routine labs and observe', correct: false },
+                        { text: 'Supportive care: O2, IV access, continuous monitoring', correct: true },
+                        { text: 'Transfer to ICU only after stabilization', correct: false }
+                    ],
+                    requiredCorrect: 3,
+                    onSuccess: { clinical: 35, reputation: 30, energy: -12, score: 300 },
+                    onFailure: { clinical: 10, reputation: -15, energy: -18, score: 70 }
+                },
+                {
+                    type: 'story',
+                    title: 'Board Certification',
+                    text: 'You\'ve completed residency and passed both written and oral boards. You\'re now a board-certified OB/GYN. Your journey is complete!',
+                    scenario: 'Congratulations, Doctor!',
+                    choices: [
+                        {
+                            text: '🎓 Reflect on the journey',
+                            effects: { reputation: 20, clinical: 10 },
+                            isFinale: true,
+                            feedback: 'You did it! Years of sacrifice, learning, and growth have paid off.'
+                        }
+                    ]
+                }
+            ],
+
+            start() {
+                this.showScreen('game-screen');
+                this.updateStats();
+                this.updateTraits();
+                this.updateProgress();
+                this.showNextEvent();
+            },
+
+            showScreen(screenId) {
+                document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+                document.getElementById(screenId).classList.add('active');
+            },
+
+            updateStats() {
+                // Cap stats at 0-100
+                Object.keys(this.stats).forEach(key => {
+                    this.stats[key] = Math.max(0, Math.min(100, this.stats[key]));
+                });
+
+                // Update display with animation
+                ['energy', 'clinical', 'research', 'reputation'].forEach(stat => {
+                    const valueEl = document.getElementById(`${stat}-value`);
+                    const barEl = document.getElementById(`${stat}-bar`);
+                    const cardEl = document.getElementById(`${stat}-card`);
+                    
+                    const newValue = Math.round(this.stats[stat]);
+                    const oldValue = parseInt(valueEl.textContent);
+                    
+                    // Animate number change
+                    if (newValue !== oldValue) {
+                        this.animateValue(valueEl, oldValue, newValue, 500);
+                        cardEl.classList.add('highlight');
+                        setTimeout(() => cardEl.classList.remove('highlight'), 600);
+                    }
+                    
+                    barEl.style.width = this.stats[stat] + '%';
+                });
+
+                // Update year display
+                const yearMap = {
+                    1: 'PGY-1 (Intern Year)',
+                    2: 'PGY-2 (Junior Resident)',
+                    3: 'PGY-3 (Senior Resident)',
+                    4: 'PGY-4 (Chief Level)',
+                    5: 'Attending/Fellowship'
+                };
+                document.getElementById('current-year').textContent = yearMap[this.year] || 'Board Certified';
+
+                // Check achievements
+                this.checkAchievements();
+
+                // Check for game over conditions
+                if (this.stats.energy <= 5) {
+                    this.endGame('burnout');
+                } else if (this.stats.energy <= 25 && this.stats.energy > 5) {
+                    // Warning for low energy
+                    const energyCard = document.getElementById('energy-card');
+                    energyCard.style.borderColor = '#e74c3c';
+                    energyCard.style.border = '3px solid #e74c3c';
+                } else {
+                    const energyCard = document.getElementById('energy-card');
+                    energyCard.style.border = 'none';
+                }
+                
+                if (this.stats.reputation < 15 && this.currentEvent > 15) {
+                    this.endGame('reputation');
+                }
+            },
+
+            animateValue(element, start, end, duration) {
+                const range = end - start;
+                const increment = range / (duration / 16);
+                let current = start;
+                
+                const timer = setInterval(() => {
+                    current += increment;
+                    if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
+                        element.textContent = end;
+                        clearInterval(timer);
+                    } else {
+                        element.textContent = Math.round(current);
+                    }
+                }, 16);
+            },
+
+            updateTraits() {
+                // Update trait indicators
+                const traits = {
+                    'clinical': this.traits.clinicalVsResearch,
+                    'approach': this.traits.conservativeVsInnovative,
+                    'bedside': this.traits.efficientVsEmpathetic
+                };
+
+                Object.keys(traits).forEach(key => {
+                    const el = document.getElementById(`trait-${key}`);
+                    el.style.left = traits[key] + '%';
+                });
+            },
+
+            updateProgress() {
+                const progress = Math.round((this.currentEvent / this.totalEvents) * 100);
+                document.getElementById('progress-percent').textContent = progress;
+                document.getElementById('progress-bar').style.width = progress + '%';
+            },
+
+            checkAchievements() {
+                const achievements = [
+                    { id: 'clinical50', condition: this.stats.clinical >= 50, title: 'Clinical Competence', desc: 'Reached 50 Clinical Skill', icon: '🩺' },
+                    { id: 'research50', condition: this.stats.research >= 50, title: 'Research Scholar', desc: 'Reached 50 Research', icon: '📚' },
+                    { id: 'reputation70', condition: this.stats.reputation >= 70, title: 'Highly Respected', desc: 'Reached 70 Reputation', icon: '⭐' },
+                    { id: 'balanced', condition: this.stats.clinical >= 50 && this.stats.research >= 50, title: 'Well-Rounded', desc: 'Balanced Clinical & Research', icon: '⚖️' },
+                    { id: 'energetic', condition: this.stats.energy >= 80, title: 'Energized', desc: 'Maintained high energy', icon: '⚡' },
+                    { id: 'survivor', condition: this.currentEvent >= 15 && this.stats.energy < 30, title: 'Survivor', desc: 'Made it halfway on fumes', icon: '💪' }
+                ];
+
+                achievements.forEach(ach => {
+                    if (ach.condition && !this.achievements.includes(ach.id)) {
+                        this.achievements.push(ach.id);
+                        this.showAchievement(ach.title, ach.desc, ach.icon);
+                        this.score += 100;
+                        this.createParticles(ach.icon);
+                        if (this.soundEnabled) this.playSound('achievement');
+                    }
+                });
+
+                // Easter Eggs!
+                if (this.stats.clinical === 69 && !this.easterEggsFound.includes('nice')) {
+                    this.easterEggsFound.push('nice');
+                    this.showAchievement('Nice', 'Clinical skill: 69. Nice.', '😏');
+                }
+
+                if (this.stats.clinical === this.stats.research && 
+                    this.stats.research === this.stats.reputation && 
+                    this.stats.clinical > 60 && 
+                    !this.easterEggsFound.includes('perfect')) {
+                    this.easterEggsFound.push('perfect');
+                    this.showAchievement('Perfectly Balanced', 'All stats equal! As all things should be...', '☯️');
+                    this.score += 200;
+                }
+
+                if (this.stats.energy === 100 && !this.easterEggsFound.includes('superhuman')) {
+                    this.easterEggsFound.push('superhuman');
+                    this.showAchievement('Superhuman', 'Max energy achieved! How?!', '💯');
+                    this.score += 150;
+                }
+            },
+
+            playSound(type) {
+                // Simple audio feedback using Web Audio API
+                if (!this.soundEnabled) return;
+                
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                if (type === 'achievement') {
+                    oscillator.frequency.value = 800;
+                    oscillator.type = 'sine';
+                    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + 0.5);
+                }
+            },
+
+            showAchievement(title, desc, icon) {
+                const popup = document.getElementById('achievement');
+                document.getElementById('achievement-icon').textContent = icon;
+                document.getElementById('achievement-title').textContent = title;
+                document.getElementById('achievement-desc').textContent = desc;
+                
+                popup.classList.add('show');
+                setTimeout(() => popup.classList.remove('show'), 3000);
+            },
+
+            showFunMessage() {
+                // Show random fun message every few events
+                if (Math.random() < 0.3 && this.currentEvent > 2) {
+                    const message = this.funMessages[Math.floor(Math.random() * this.funMessages.length)];
+                    const popup = document.getElementById('achievement');
+                    document.getElementById('achievement-icon').textContent = '💭';
+                    document.getElementById('achievement-title').textContent = 'Resident Thoughts';
+                    document.getElementById('achievement-desc').textContent = message;
+                    
+                    popup.classList.add('show');
+                    setTimeout(() => popup.classList.remove('show'), 2500);
+                }
+            },
+
+            createParticles(emoji) {
+                const container = document.getElementById('particles');
+                for (let i = 0; i < 15; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.textContent = emoji;
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.animationDelay = Math.random() * 0.5 + 's';
+                    container.appendChild(particle);
+                    
+                    setTimeout(() => particle.remove(), 3000);
+                }
+            },
+
+            showNextEvent() {
+                if (this.currentEvent >= this.events.length) {
+                    this.endGame('success');
+                    return;
+                }
+
+                const event = this.events[this.currentEvent];
+                const content = document.getElementById('game-content');
+
+                if (event.type === 'story') {
+                    this.showStoryEvent(event, content);
+                } else if (event.type === 'minigame-diagnosis') {
+                    this.showDiagnosisGame(event, content);
+                } else if (event.type === 'minigame-reflex') {
+                    this.showReflexGame(event, content);
+                } else if (event.type === 'minigame-timing') {
+                    this.showTimingGame(event, content);
+                }
+
+                this.updateProgress();
+            },
+
+            showStoryEvent(event, content) {
+                let html = `
+                    <div class="story-text">
+                        <h3>${event.title}</h3>
+                        <p>${event.text}</p>
+                `;
+
+                if (event.scenario) {
+                    html += `<div class="scenario-info"><strong>Clinical Context:</strong> ${event.scenario}</div>`;
+                }
+
+                if (event.medical) {
+                    html += `<div class="medical-detail"><strong>Medical Note:</strong> ${event.medical}</div>`;
+                }
+
+                html += `</div><div class="choices" id="choices-container"></div>`;
+                content.innerHTML = html;
+
+                const choicesContainer = document.getElementById('choices-container');
+                event.choices.forEach((choice, index) => {
+                    const btn = document.createElement('button');
+                    const styleClass = choice.traits ? 
+                        (choice.traits.clinicalVsResearch > 0 ? 'research' : 
+                         choice.traits.clinicalVsResearch < 0 ? 'clinical' :
+                         choice.traits.efficientVsEmpathetic > 0 ? 'empathetic' : 'clinical') : 'clinical';
+                    
+                    btn.className = `choice-btn ${styleClass}`;
+                    
+                    let effectsHtml = '';
+                    if (choice.effects) {
+                        effectsHtml = '<div class="choice-effects">';
+                        Object.keys(choice.effects).forEach(key => {
+                            const val = choice.effects[key];
+                            if (val !== 0) {
+                                const badgeClass = val > 0 ? 'positive' : 'negative';
+                                const icon = {energy: '⚡', clinical: '🩺', research: '📚', reputation: '⭐'}[key] || '';
+                                effectsHtml += `<span class="effect-badge ${badgeClass}">${icon} ${val > 0 ? '+' : ''}${val}</span>`;
+                            }
+                        });
+                        effectsHtml += '</div>';
+                    }
+                    
+                    btn.innerHTML = choice.text + effectsHtml;
+                    btn.addEventListener('click', () => this.makeChoice(choice));
+                    choicesContainer.appendChild(btn);
+                });
+            },
+
+            showDiagnosisGame(event, content) {
+                content.innerHTML = `
+                    <div class="mini-game">
+                        <div class="mini-game-title">${event.title}</div>
+                        <p style="margin-bottom: 12px; line-height: 1.6;">${event.text}</p>
+                        <div style="background: linear-gradient(135deg, #e8f4f8, #f0fff7); padding: 12px; border-radius: 12px; margin-bottom: 15px; border: 2px solid var(--accent-green);">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <span style="font-size: 13px; font-weight: 700; color: var(--text-dark);">Progress: <span id="diag-progress">0/${event.requiredCorrect}</span></span>
+                                <span style="font-size: 13px; font-weight: 700; color: var(--accent-pink);">Wrong: <span id="diag-wrong">0/2</span></span>
+                            </div>
+                            <div style="height: 8px; background: rgba(0,0,0,0.1); border-radius: 4px; overflow: hidden;">
+                                <div id="diag-progress-bar" style="height: 100%; background: linear-gradient(90deg, var(--accent-green), #5fb883); width: 0%; transition: width 0.3s ease;"></div>
+                            </div>
+                        </div>
+                        <div class="diagnosis-options" id="diagnosis-game"></div>
+                    </div>
+                `;
+
+                const gameContainer = document.getElementById('diagnosis-game');
+                let correctSelected = 0;
+                let wrongSelected = 0;
+
+                event.options.forEach((option, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'diagnosis-card';
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(20px)';
+                    card.innerHTML = `
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <span style="flex: 1;">${option.text}</span>
+                            <span class="card-indicator" style="font-size: 20px; opacity: 0; transition: opacity 0.3s;">✓</span>
+                        </div>
+                    `;
+                    card.dataset.correct = option.correct;
+                    
+                    // Stagger animation
+                    setTimeout(() => {
+                        card.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, index * 100);
+                    
+                    card.addEventListener('click', function() {
+                        if (this.classList.contains('selected') || this.classList.contains('wrong')) return;
+
+                        const indicator = this.querySelector('.card-indicator');
+                        
+                        if (option.correct) {
+                            this.classList.add('selected');
+                            this.style.transform = 'scale(1.05)';
+                            setTimeout(() => this.style.transform = 'scale(1)', 200);
+                            indicator.textContent = '✓';
+                            indicator.style.opacity = '1';
+                            indicator.style.color = 'white';
+                            correctSelected++;
+                            game.score += 20;
+                            
+                            // Update progress
+                            document.getElementById('diag-progress').textContent = `${correctSelected}/${event.requiredCorrect}`;
+                            const progressBar = document.getElementById('diag-progress-bar');
+                            progressBar.style.width = (correctSelected / event.requiredCorrect * 100) + '%';
+                            
+                            // Confetti on correct
+                            game.createParticles('✓');
+                        } else {
+                            this.classList.add('wrong');
+                            this.style.animation = 'shake 0.5s';
+                            indicator.textContent = '✗';
+                            indicator.style.opacity = '1';
+                            indicator.style.color = 'white';
+                            wrongSelected++;
+                            game.score = Math.max(0, game.score - 15);
+                            
+                            // Update wrong count
+                            document.getElementById('diag-wrong').textContent = `${wrongSelected}/2`;
+                        }
+                        game.updateStats();
+
+                        if (correctSelected >= event.requiredCorrect) {
+                            // Celebration effect
+                            setTimeout(() => {
+                                document.querySelectorAll('.diagnosis-card.selected').forEach(c => {
+                                    c.style.animation = 'pulse 0.6s';
+                                });
+                            }, 100);
+                            setTimeout(() => {
+                                game.completeDiagnosisGame(event, true);
+                            }, 1000);
+                        } else if (wrongSelected >= 2) {
+                            setTimeout(() => {
+                                game.completeDiagnosisGame(event, false);
+                            }, 800);
+                        }
+                    });
+                    gameContainer.appendChild(card);
+                });
+            },
+
+            completeDiagnosisGame(event, success) {
+                const effects = success ? event.onSuccess : event.onFailure;
+                this.applyEffects(effects);
+                
+                const messages = {
+                    success: [
+                        '✅ Excellent clinical reasoning! You identified the key findings.',
+                        '👏 Outstanding diagnostic skills! Textbook management.',
+                        '🎯 Perfect! Your clinical acumen is developing well.'
+                    ],
+                    failure: [
+                        '⚠️ Not quite. Review the clinical presentation and guidelines.',
+                        '📚 This one got you. Time to hit the books on this topic.',
+                        '🤔 Missed some key points. Every case teaches something.'
+                    ]
+                };
+                
+                const messageList = success ? messages.success : messages.failure;
+                const message = messageList[Math.floor(Math.random() * messageList.length)];
+                
+                if (success) {
+                    this.createParticles('🎉');
+                }
+                
+                document.getElementById('diagnosis-game').innerHTML = `
+                    <p style="text-align: center; font-weight: 600; margin: 20px 0; font-size: 16px; line-height: 1.6;">${message}</p>
+                    <button class="choice-btn clinical continue-btn" style="width: 100%;">Continue Journey</button>
+                `;
+                
+                document.querySelector('.continue-btn').addEventListener('click', () => this.nextEvent());
+            },
+
+            showReflexGame(event, content) {
+                content.innerHTML = `
+                    <div class="mini-game">
+                        <div class="mini-game-title">${event.title}</div>
+                        <p style="margin-bottom: 15px; text-align: center; line-height: 1.6;">${event.text}<br><small style="color: var(--accent-green);">💡 Tap/drag to move basket and catch items!</small></p>
+                        <div style="position: relative;">
+                            <div style="display: flex; justify-content: space-around; margin-bottom: 10px; background: white; padding: 10px; border-radius: 12px;">
+                                <div><span style="color: var(--text-light); font-size: 12px;">SCORE</span><br><span style="font-size: 24px; font-weight: 800; color: var(--accent-blue);" id="reflex-score">0</span></div>
+                                <div><span style="color: var(--text-light); font-size: 12px;">TIME</span><br><span style="font-size: 24px; font-weight: 800; color: var(--accent-pink);" id="reflex-timer">${event.duration}</span></div>
+                                <div><span style="color: var(--text-light); font-size: 12px;">TARGET</span><br><span style="font-size: 24px; font-weight: 800; color: var(--accent-green);">${event.targetScore}</span></div>
+                            </div>
+                            <canvas id="reflex-canvas" width="380" height="320" style="display: block; width: 100%; border-radius: 16px; background: linear-gradient(135deg, #e8f4f8, #f0e8f8); border: 3px solid var(--accent-blue); touch-action: none; box-shadow: 0 4px 20px var(--shadow);"></canvas>
+                        </div>
+                    </div>
+                `;
+
+                // Wait for DOM to be ready
+                setTimeout(() => {
+                    const canvas = document.getElementById('reflex-canvas');
+                    if (!canvas) {
+                        console.error('Canvas not found');
+                        return;
+                    }
+
+                    const ctx = canvas.getContext('2d');
+                    let gameScore = 0;
+                    let timeLeft = event.duration;
+                    let paddleX = 190;
+                    const paddleWidth = 80;
+                    const paddleHeight = 20;
+                    let items = [];
+                    let particles = [];
+                    let animFrame;
+                    let timerInterval;
+                    let spawnInterval;
+
+                    const goodItems = [
+                        { emoji: '💊', color: '#e8a735' },
+                        { emoji: '🩺', color: '#2c5f8d' },
+                        { emoji: '💉', color: '#d4526e' },
+                        { emoji: '🫀', color: '#e74c3c' },
+                        { emoji: '🧬', color: '#8b5a9f' }
+                    ];
+                    
+                    const badItems = [
+                        { emoji: '❌', color: '#c0392b' },
+                        { emoji: '☠️', color: '#2c3e50' },
+                        { emoji: '⚠️', color: '#f39c12' }
+                    ];
+
+                    // Timer
+                    timerInterval = setInterval(() => {
+                        timeLeft--;
+                        const timerEl = document.getElementById('reflex-timer');
+                        if (timerEl) {
+                            timerEl.textContent = timeLeft;
+                            if (timeLeft <= 5) timerEl.style.color = '#e74c3c';
+                        }
+                        if (timeLeft <= 0) {
+                            clearInterval(timerInterval);
+                            clearInterval(spawnInterval);
+                            cancelAnimationFrame(animFrame);
+                            game.completeReflexGame(event, gameScore >= event.targetScore);
+                        }
+                    }, 1000);
+
+                    // Spawn items
+                    spawnInterval = setInterval(() => {
+                        const isGood = Math.random() > 0.25;
+                        const itemData = isGood ? goodItems[Math.floor(Math.random() * goodItems.length)] : badItems[Math.floor(Math.random() * badItems.length)];
+                        items.push({
+                            x: Math.random() * (canvas.width - 40) + 20,
+                            y: -20,
+                            speed: 2 + Math.random() * 2,
+                            emoji: itemData.emoji,
+                            color: itemData.color,
+                            isGood: isGood,
+                            rotation: Math.random() * 360,
+                            rotationSpeed: (Math.random() - 0.5) * 5
+                        });
+                    }, 700);
+
+                    // Create particle effect
+                    const createParticles = (x, y, color, count = 15) => {
+                        for (let i = 0; i < count; i++) {
+                            particles.push({
+                                x: x,
+                                y: y,
+                                vx: (Math.random() - 0.5) * 8,
+                                vy: (Math.random() - 0.5) * 8 - 2,
+                                life: 1.0,
+                                color: color,
+                                size: Math.random() * 4 + 2
+                            });
+                        }
+                    };
+
+                    // Mouse/touch controls
+                    const updatePaddle = (e) => {
+                        const rect = canvas.getBoundingClientRect();
+                        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                        paddleX = ((clientX - rect.left) / rect.width) * canvas.width;
+                        paddleX = Math.max(paddleWidth/2, Math.min(canvas.width - paddleWidth/2, paddleX));
+                    };
+
+                    canvas.addEventListener('mousemove', updatePaddle);
+                    canvas.addEventListener('touchmove', (e) => { e.preventDefault(); updatePaddle(e); });
+                    canvas.addEventListener('touchstart', (e) => { e.preventDefault(); updatePaddle(e); });
+                    canvas.addEventListener('click', updatePaddle);
+
+                    // Game loop
+                    const gameLoop = () => {
+                        // Clear canvas with gradient
+                        const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+                        gradient.addColorStop(0, '#e8f4f8');
+                        gradient.addColorStop(1, '#f0e8f8');
+                        ctx.fillStyle = gradient;
+                        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                        // Update and draw items
+                        items = items.filter(item => {
+                            item.y += item.speed;
+                            item.rotation += item.rotationSpeed;
+
+                            // Check collision with paddle
+                            if (item.y + 20 >= canvas.height - paddleHeight - 10 && 
+                                item.y + 20 <= canvas.height - 10 &&
+                                item.x >= paddleX - paddleWidth/2 && 
+                                item.x <= paddleX + paddleWidth/2) {
+                                
+                                if (item.isGood) {
+                                    gameScore++;
+                                    game.score += 15;
+                                    createParticles(item.x, item.y, item.color);
+                                } else {
+                                    gameScore = Math.max(0, gameScore - 1);
+                                    game.score = Math.max(0, game.score - 20);
+                                    createParticles(item.x, item.y, '#e74c3c', 10);
+                                }
+                                
+                                const scoreEl = document.getElementById('reflex-score');
+                                if (scoreEl) {
+                                    scoreEl.textContent = gameScore;
+                                    scoreEl.style.transform = 'scale(1.3)';
+                                    setTimeout(() => { if (scoreEl) scoreEl.style.transform = 'scale(1)'; }, 200);
+                                }
+                                game.updateStats();
+                                return false;
+                            }
+
+                            // Draw item with rotation and shadow
+                            ctx.save();
+                            ctx.translate(item.x, item.y);
+                            ctx.rotate((item.rotation * Math.PI) / 180);
+                            ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
+                            ctx.shadowBlur = 5;
+                            ctx.shadowOffsetY = 3;
+                            ctx.font = '36px Arial';
+                            ctx.textAlign = 'center';
+                            ctx.textBaseline = 'middle';
+                            ctx.fillText(item.emoji, 0, 0);
+                            ctx.restore();
+
+                            return item.y < canvas.height + 20;
+                        });
+
+                        // Update and draw particles
+                        particles = particles.filter(p => {
+                            p.x += p.vx;
+                            p.y += p.vy;
+                            p.vy += 0.3; // gravity
+                            p.life -= 0.02;
+
+                            ctx.globalAlpha = p.life;
+                            ctx.fillStyle = p.color;
+                            ctx.beginPath();
+                            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                            ctx.fill();
+                            ctx.globalAlpha = 1.0;
+
+                            return p.life > 0;
+                        });
+
+                        // Draw paddle with gradient and glow
+                        ctx.save();
+                        ctx.shadowColor = 'rgba(44, 95, 141, 0.5)';
+                        ctx.shadowBlur = 10;
+                        const paddleGradient = ctx.createLinearGradient(0, canvas.height - paddleHeight - 10, 0, canvas.height - 10);
+                        paddleGradient.addColorStop(0, '#3a7bc8');
+                        paddleGradient.addColorStop(1, '#2c5f8d');
+                        ctx.fillStyle = paddleGradient;
+                        ctx.fillRect(paddleX - paddleWidth/2, canvas.height - paddleHeight - 10, paddleWidth, paddleHeight);
+                        ctx.restore();
+
+                        // Draw basket emoji on paddle
+                        ctx.font = '28px Arial';
+                        ctx.textAlign = 'center';
+                        ctx.fillText('🧺', paddleX, canvas.height - 15);
+
+                        if (timeLeft > 0) {
+                            animFrame = requestAnimationFrame(gameLoop);
+                        }
+                    };
+
+                    // Start the game loop
+                    gameLoop();
+                }, 100);
+            },
+
+            completeReflexGame(event, success) {
+                const effects = success ? event.onSuccess : event.onFailure;
+                this.applyEffects(effects);
+                
+                const message = success ? 
+                    '✅ Excellent reflexes and prioritization! Your clinical judgment under pressure is solid.' : 
+                    '⚠️ Tough one! Speed and accuracy come with practice. Keep working on it.';
+                
+                if (success) this.createParticles('🎯');
+                
+                const content = document.getElementById('game-content');
+                if (!content) {
+                    console.error('Game content container not found');
+                    this.nextEvent();
+                    return;
+                }
+                
+                content.innerHTML = `
+                    <div class="mini-game">
+                        <div class="mini-game-title">Game Complete!</div>
+                        <p style="text-align: center; font-weight: 600; margin: 40px 20px; font-size: 16px; line-height: 1.6;">${message}</p>
+                        <button class="choice-btn clinical continue-btn" style="margin: 0 20px; width: calc(100% - 40px);">Continue Journey</button>
+                    </div>
+                `;
+                
+                const continueBtn = content.querySelector('.continue-btn');
+                if (continueBtn) {
+                    continueBtn.addEventListener('click', () => this.nextEvent());
+                }
+            },
+
+            showTimingGame(event, content) {
+                content.innerHTML = `
+                    <div class="mini-game">
+                        <div class="mini-game-title">${event.title}</div>
+                        <p style="margin-bottom: 15px; text-align: center; line-height: 1.6;">${event.text}<br><small style="color: var(--accent-green);">💡 Tap when bar hits GREEN zone!</small></p>
+                        <canvas id="timing-canvas" width="380" height="350" style="display: block; width: 100%; border-radius: 16px; background: linear-gradient(135deg, #2c3e50, #34495e); border: 3px solid var(--accent-blue); touch-action: none; cursor: pointer; box-shadow: 0 4px 20px var(--shadow);"></canvas>
+                    </div>
+                `;
+
+                setTimeout(() => {
+                    const canvas = document.getElementById('timing-canvas');
+                    if (!canvas) {
+                        console.error('Timing canvas not found');
+                        return;
+                    }
+
+                    const ctx = canvas.getContext('2d');
+                    let round = 0;
+                    let successCount = 0;
+                    let combo = 0;
+                    let position = 0;
+                    let direction = 1;
+                    let gameActive = false;
+                    let intervalId;
+                    let animFrame;
+                    let particles = [];
+                    let feedbackText = '';
+                    let feedbackAlpha = 0;
+
+                    const createParticles = (x, y, color, count = 20) => {
+                        for (let i = 0; i < count; i++) {
+                            particles.push({
+                                x: x,
+                                y: y,
+                                vx: (Math.random() - 0.5) * 10,
+                                vy: (Math.random() - 0.5) * 10 - 3,
+                                life: 1.0,
+                                color: color,
+                                size: Math.random() * 6 + 3
+                            });
+                        }
+                    };
+
+                    const startRound = () => {
+                        if (round >= event.rounds) {
+                            if (animFrame) cancelAnimationFrame(animFrame);
+                            game.completeTimingGame(event, successCount >= Math.ceil(event.rounds * 0.6));
+                            return;
+                        }
+
+                        round++;
+                        gameActive = true;
+                        position = 0;
+                        direction = 1;
+                        feedbackText = '';
+
+                        const speed = 1 + Math.random() * 1.5;
+                        intervalId = setInterval(() => {
+                            if (!gameActive) {
+                                clearInterval(intervalId);
+                                return;
+                            }
+
+                            position += direction * speed;
+                            if (position >= 100) {
+                                position = 100;
+                                direction = -1;
+                            } else if (position <= 0) {
+                                position = 0;
+                                direction = 1;
+                            }
+                        }, 20);
+                    };
+
+                    const handleTap = () => {
+                        if (!gameActive) return;
+                        
+                        gameActive = false;
+                        clearInterval(intervalId);
+                        
+                        const inTarget = position >= 35 && position <= 65;
+                        const isPerfect = position >= 45 && position <= 55;
+                        
+                        if (isPerfect) {
+                            successCount++;
+                            combo++;
+                            game.score += 50 * combo;
+                            feedbackText = `PERFECT! x${combo}`;
+                            createParticles(canvas.width/2, canvas.height/2, '#52a675', 30);
+                        } else if (inTarget) {
+                            successCount++;
+                            combo++;
+                            game.score += 30;
+                            feedbackText = `GOOD! x${combo}`;
+                            createParticles(canvas.width/2, canvas.height/2, '#e8a735', 20);
+                        } else {
+                            combo = 0;
+                            game.score = Math.max(0, game.score - 10);
+                            feedbackText = 'MISS!';
+                            createParticles(canvas.width/2, canvas.height/2, '#e74c3c', 15);
+                        }
+                        
+                        feedbackAlpha = 1.0;
+                        game.updateStats();
+                        game.createParticles(inTarget ? '✓' : '✗');
+
+                        setTimeout(() => {
+                            position = 0;
+                            setTimeout(startRound, 400);
+                        }, 600);
+                    };
+
+                    canvas.addEventListener('click', handleTap);
+                    canvas.addEventListener('touchstart', (e) => { e.preventDefault(); handleTap(); });
+
+                    const gameLoop = () => {
+                        // Dark gradient background
+                        const bgGradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+                        bgGradient.addColorStop(0, '#2c3e50');
+                        bgGradient.addColorStop(1, '#34495e');
+                        ctx.fillStyle = bgGradient;
+                        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                        // Draw round info
+                        ctx.fillStyle = 'white';
+                        ctx.font = 'bold 24px Arial';
+                        ctx.textAlign = 'center';
+                        ctx.fillText(`Round ${round}/${event.rounds}`, canvas.width/2, 40);
+                        
+                        // Draw combo
+                        if (combo > 1) {
+                            ctx.fillStyle = '#ffd700';
+                            ctx.font = 'bold 32px Arial';
+                            ctx.shadowColor = 'rgba(255, 215, 0, 0.5)';
+                            ctx.shadowBlur = 10;
+                            ctx.fillText(`${combo}x COMBO!`, canvas.width/2, 80);
+                            ctx.shadowBlur = 0;
+                        }
+
+                        // Draw timing bar container with glow
+                        const barY = canvas.height - 120;
+                        const barHeight = 60;
+                        const barWidth = canvas.width * 0.85;
+                        const barX = (canvas.width - barWidth) / 2;
+
+                        // Outer glow
+                        ctx.shadowColor = 'rgba(58, 123, 200, 0.5)';
+                        ctx.shadowBlur = 15;
+                        ctx.strokeStyle = '#3a7bc8';
+                        ctx.lineWidth = 4;
+                        ctx.beginPath();
+                        if (ctx.roundRect) {
+                            ctx.roundRect(barX - 5, barY - 5, barWidth + 10, barHeight + 10, 15);
+                        } else {
+                            ctx.rect(barX - 5, barY - 5, barWidth + 10, barHeight + 10);
+                        }
+                        ctx.stroke();
+                        ctx.shadowBlur = 0;
+
+                        // Bar background
+                        const barBg = ctx.createLinearGradient(barX, barY, barX, barY + barHeight);
+                        barBg.addColorStop(0, '#1a1a1a');
+                        barBg.addColorStop(1, '#2a2a2a');
+                        ctx.fillStyle = barBg;
+                        ctx.beginPath();
+                        if (ctx.roundRect) {
+                            ctx.roundRect(barX, barY, barWidth, barHeight, 12);
+                        } else {
+                            ctx.rect(barX, barY, barWidth, barHeight);
+                        }
+                        ctx.fill();
+
+                        // Perfect zone (darker green)
+                        const perfectWidth = barWidth * 0.2;
+                        const perfectX = barX + (barWidth * 0.45);
+                        ctx.fillStyle = 'rgba(82, 166, 117, 0.3)';
+                        ctx.fillRect(perfectX, barY, perfectWidth, barHeight);
+
+                        // Good zone (lighter green)
+                        const goodWidth = barWidth * 0.3;
+                        const goodX = barX + (barWidth * 0.35);
+                        ctx.fillStyle = 'rgba(82, 166, 117, 0.15)';
+                        ctx.fillRect(goodX, barY, goodWidth, barHeight);
+
+                        // Moving indicator with gradient and glow
+                        const indicatorX = barX + (barWidth * position / 100);
+                        const indicatorWidth = 6;
+                        
+                        ctx.shadowColor = '#d4526e';
+                        ctx.shadowBlur = 20;
+                        const indicatorGradient = ctx.createLinearGradient(indicatorX, barY, indicatorX, barY + barHeight);
+                        indicatorGradient.addColorStop(0, '#e16b84');
+                        indicatorGradient.addColorStop(1, '#d4526e');
+                        ctx.fillStyle = indicatorGradient;
+                        ctx.fillRect(indicatorX - indicatorWidth/2, barY, indicatorWidth, barHeight);
+                        ctx.shadowBlur = 0;
+
+                        // Zone labels
+                        ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+                        ctx.font = 'bold 14px Arial';
+                        ctx.fillText('PERFECT', barX + barWidth/2, barY + barHeight + 25);
+
+                        // Update and draw particles
+                        particles = particles.filter(p => {
+                            p.x += p.vx;
+                            p.y += p.vy;
+                            p.vy += 0.2;
+                            p.life -= 0.015;
+
+                            ctx.globalAlpha = p.life;
+                            ctx.fillStyle = p.color;
+                            ctx.beginPath();
+                            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                            ctx.fill();
+                            ctx.globalAlpha = 1.0;
+
+                            return p.life > 0;
+                        });
+
+                        // Draw feedback text
+                        if (feedbackAlpha > 0) {
+                            ctx.globalAlpha = feedbackAlpha;
+                            ctx.fillStyle = feedbackText.includes('PERFECT') ? '#52a675' : 
+                                           feedbackText.includes('GOOD') ? '#e8a735' : '#e74c3c';
+                            ctx.font = 'bold 48px Arial';
+                            ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+                            ctx.shadowBlur = 10;
+                            ctx.fillText(feedbackText, canvas.width/2, canvas.height/2 - 50);
+                            ctx.shadowBlur = 0;
+                            ctx.globalAlpha = 1.0;
+                            feedbackAlpha -= 0.02;
+                        }
+
+                        animFrame = requestAnimationFrame(gameLoop);
+                    };
+
+                    gameLoop();
+                    setTimeout(startRound, 1000);
+                }, 100);
+            },
+
+            completeTimingGame(event, success) {
+                const effects = success ? event.onSuccess : event.onFailure;
+                this.applyEffects(effects);
+                
+                const message = success ? 
+                    '✅ Perfect surgical precision! Your timing and hand-eye coordination are exceptional.' : 
+                    '⚠️ Timing needs refinement. Surgical skills develop with repetition and practice.';
+                
+                if (success) this.createParticles('🏆');
+                
+                const content = document.getElementById('game-content');
+                if (!content) {
+                    console.error('Game content container not found');
+                    this.nextEvent();
+                    return;
+                }
+                
+                content.innerHTML = `
+                    <div class="mini-game">
+                        <div class="mini-game-title">Game Complete!</div>
+                        <p style="text-align: center; font-weight: 600; margin: 40px 20px; font-size: 16px; line-height: 1.6;">${message}</p>
+                        <button class="choice-btn clinical continue-btn" style="margin: 0 20px; width: calc(100% - 40px);">Continue Journey</button>
+                    </div>
+                `;
+                
+                const continueBtn = content.querySelector('.continue-btn');
+                if (continueBtn) {
+                    continueBtn.addEventListener('click', () => this.nextEvent());
+                }
+            },
+
+            makeChoice(choice) {
+                if (choice.effects) {
+                    this.applyEffects(choice.effects);
+                }
+                
+                if (choice.traits) {
+                    Object.keys(choice.traits).forEach(key => {
+                        this.traits[key] = Math.max(0, Math.min(100, this.traits[key] + choice.traits[key]));
+                    });
+                    this.updateTraits();
+                }
+
+                if (choice.specialty) {
+                    this.specialty = choice.specialty;
+                }
+
+                if (choice.feedback) {
+                    // Show brief feedback before continuing
+                    const feedback = document.createElement('div');
+                    feedback.style.cssText = 'background: #f0f7ff; padding: 15px; border-radius: 12px; margin-top: 15px; border-left: 4px solid var(--accent-blue); font-size: 14px; line-height: 1.6;';
+                    feedback.innerHTML = `<strong>Clinical Note:</strong> ${choice.feedback}`;
+                    document.getElementById('game-content').appendChild(feedback);
+                    
+                    setTimeout(() => {
+                        if (choice.isFinale) {
+                            this.endGame('success');
+                        } else {
+                            this.nextEvent();
+                        }
+                    }, 2500);
+                } else {
+                    if (choice.isFinale) {
+                        this.endGame('success');
+                    } else {
+                        this.nextEvent();
+                    }
+                }
+            },
+
+            applyEffects(effects) {
+                Object.keys(effects).forEach(key => {
+                    if (key === 'score') {
+                        this.score += effects[key];
+                    } else {
+                        this.stats[key] = (this.stats[key] || 0) + effects[key];
+                    }
+                });
+                this.updateStats();
+            },
+
+            nextEvent() {
+                this.currentEvent++;
+                
+                // Update year based on progress
+                if (this.currentEvent === 6) this.year = 2;
+                else if (this.currentEvent === 12) this.year = 3;
+                else if (this.currentEvent === 18) this.year = 4;
+                else if (this.currentEvent === 23) this.year = 5;
+                
+                // Show fun message occasionally
+                this.showFunMessage();
+                
+                this.showNextEvent();
+            },
+
+            endGame(reason) {
+                this.showScreen('end-screen');
+                
+                const resultIcon = document.getElementById('result-icon');
+                const resultTitle = document.getElementById('result-title');
+                const resultMessage = document.getElementById('result-message');
+                const finalStats = document.getElementById('final-stats');
+
+                if (reason === 'success') {
+                    const avgStats = (this.stats.clinical + this.stats.research + this.stats.reputation) / 3;
+                    
+                    let title, icon, message;
+                    if (avgStats >= 75 && this.stats.energy >= 50) {
+                        title = '🏆 Outstanding Physician-Scientist';
+                        icon = '🏆';
+                        message = `<p>You've achieved the rare balance of clinical excellence, research productivity, and personal wellbeing. Your ${this.specialty || 'practice'} patients are fortunate to have you.</p><p style="margin-top: 12px;">Your publications are cited, your surgical outcomes are exceptional, and your trainees speak highly of you. You've made meaningful contributions to women's healthcare.</p>`;
+                        this.createParticles('🎉');
+                    } else if (avgStats >= 60) {
+                        title = '⭐ Accomplished Specialist';
+                        icon = '⭐';
+                        message = `<p>You've completed your training and become a respected ${this.specialty || 'OB/GYN'}. Your clinical skills are solid, and you've found your niche in women's healthcare.</p><p style="margin-top: 12px;">The road was challenging, but you persevered. Your patients trust you, and your colleagues respect you.</p>`;
+                    } else {
+                        title = '🎓 Board Certified';
+                        icon = '🎓';
+                        message = `<p>You made it through! Residency tested you, but you're now a board-certified OB/GYN. The journey was harder than expected, with lessons learned along the way.</p><p style="margin-top: 12px;">You're ready to practice independently, though you recognize there's always more to learn.</p>`;
+                    }
+
+                    // Personality summary
+                    const personalityInsights = [];
+                    if (this.traits.clinicalVsResearch > 60) {
+                        personalityInsights.push('You became known for research contributions and academic rigor.');
+                    } else if (this.traits.clinicalVsResearch < 40) {
+                        personalityInsights.push('You excelled as a clinician, prioritizing direct patient care.');
+                    }
+
+                    if (this.traits.conservativeVsInnovative > 60) {
+                        personalityInsights.push('Your innovative approaches pushed boundaries and advanced care.');
+                    } else if (this.traits.conservativeVsInnovative < 40) {
+                        personalityInsights.push('Your evidence-based, conservative approach minimized risks.');
+                    }
+
+                    if (this.traits.efficientVsEmpathetic > 60) {
+                        personalityInsights.push('Patients remember your empathy and compassionate bedside manner.');
+                    } else if (this.traits.efficientVsEmpathetic < 40) {
+                        personalityInsights.push('You were valued for efficiency and managing high patient volumes.');
+                    }
+
+                    if (personalityInsights.length > 0) {
+                        message += `<p style="margin-top: 12px; font-style: italic; color: var(--text-light);">${personalityInsights.join(' ')}</p>`;
+                    }
+
+                    resultTitle.textContent = title;
+                    resultIcon.textContent = icon;
+                    resultMessage.innerHTML = message;
+                } else if (reason === 'burnout') {
+                    resultTitle.textContent = 'Burnout';
+                    resultIcon.textContent = '😓';
+                    resultMessage.innerHTML = '<p>The relentless pace caught up with you. Physician burnout is real and serious. There\'s no shame in recognizing your limits.</p><p style="margin-top: 12px;">Many residents take leave, seek counseling, or adjust their career paths. Your health matters more than any title.</p>';
+                } else if (reason === 'reputation') {
+                    resultTitle.textContent = 'Career Setback';
+                    resultIcon.textContent = '📉';
+                    resultMessage.innerHTML = '<p>Your reputation took too many hits. In medicine, trust is everything - with patients, colleagues, and institutions.</p><p style="margin-top: 12px;">This isn\'t necessarily the end. Some physicians rebuild through remediation, therapy, and renewed commitment to excellence.</p>';
+                }
+
+                finalStats.innerHTML = `
+                    <div class="final-stat">
+                        <div class="final-stat-label">🏆 Total Score</div>
+                        <div class="final-stat-value">${this.score}</div>
+                    </div>
+                    <div class="final-stat">
+                        <div class="final-stat-label">🩺 Clinical</div>
+                        <div class="final-stat-value">${Math.round(this.stats.clinical)}</div>
+                    </div>
+                    <div class="final-stat">
+                        <div class="final-stat-label">📚 Research</div>
+                        <div class="final-stat-value">${Math.round(this.stats.research)}</div>
+                    </div>
+                    <div class="final-stat">
+                        <div class="final-stat-label">⭐ Reputation</div>
+                        <div class="final-stat-value">${Math.round(this.stats.reputation)}</div>
+                    </div>
+                    <div class="final-stat">
+                        <div class="final-stat-label">⚡ Final Energy</div>
+                        <div class="final-stat-value">${Math.round(this.stats.energy)}</div>
+                    </div>
+                    <div class="final-stat">
+                        <div class="final-stat-label">🏅 Achievements</div>
+                        <div class="final-stat-value">${this.achievements.length}</div>
+                    </div>
+                `;
+            }
+        };
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Canvas roundRect polyfill for older browsers
+            if (!CanvasRenderingContext2D.prototype.roundRect) {
+                CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r) {
+                    if (w < 2 * r) r = w / 2;
+                    if (h < 2 * r) r = h / 2;
+                    this.beginPath();
+                    this.moveTo(x + r, y);
+                    this.arcTo(x + w, y, x + w, y + h, r);
+                    this.arcTo(x + w, y + h, x, y + h, r);
+                    this.arcTo(x, y + h, x, y, r);
+                    this.arcTo(x, y, x + w, y, r);
+                    this.closePath();
+                    return this;
+                };
+            }
+            
+            // Start buttons
+            document.getElementById('start-btn').addEventListener('click', () => game.start());
+            
+            const startFromGuideBtn = document.getElementById('start-from-guide-btn');
+            if (startFromGuideBtn) {
+                startFromGuideBtn.addEventListener('click', () => game.start());
+            }
+
+            // Tab switching
+            document.getElementById('tab-welcome').addEventListener('click', function() {
+                document.getElementById('welcome-content').style.display = 'block';
+                document.getElementById('howto-content').style.display = 'none';
+                document.getElementById('tab-welcome').classList.add('active');
+                document.getElementById('tab-howto').classList.remove('active');
+            });
+
+            document.getElementById('tab-howto').addEventListener('click', function() {
+                document.getElementById('welcome-content').style.display = 'none';
+                document.getElementById('howto-content').style.display = 'block';
+                document.getElementById('tab-welcome').classList.remove('active');
+                document.getElementById('tab-howto').classList.add('active');
+            });
+
+            // Play again button
+            document.addEventListener('click', function(e) {
+                if (e.target && e.target.id === 'play-again-btn') {
+                    location.reload();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
